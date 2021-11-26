@@ -2,7 +2,8 @@
     package="com.example.mobile_gyro_parallax">
    <application
         android:label="mobile_gyro_parallax"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:screenOrientation="portrait">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
