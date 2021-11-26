@@ -148,8 +148,8 @@ class _AnotherTestState extends State<AnotherTest> {
         body: Stack(
           children: [
             Positioned(
-              top: secondTop,
-              left: secondLeft ?? (width! - 100) / 2,
+              top: double.parse(secondTop.toStringAsFixed(1)),
+              left: double.parse(secondLeft!.toStringAsFixed(1)),
               // the container has a color and is wrappeed in a ClipOval to make it round
               child: ClipOval(
                 child: Container(
@@ -160,8 +160,8 @@ class _AnotherTestState extends State<AnotherTest> {
               ),
             ),
             Positioned(
-              top: top,
-              left: left ?? (width! - 100) / 2,
+              top: double.parse(top.toStringAsFixed(1)),
+              left: double.parse(left!.toStringAsFixed(1)),
               // the container has a color and is wrappeed in a ClipOval to make it round
               child: ClipOval(
                 child: Container(
