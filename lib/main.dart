@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_gyro_parallax/anothertest.dart';
+import 'package:mobile_gyro_parallax/test_parallax.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 void main() => runApp(MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AnotherTest(title: 'Accelerometer'),
+      home: TestParallax(title: 'Accelerometer'),
     );
   }
 }
