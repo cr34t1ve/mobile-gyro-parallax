@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:mobile_gyro_parallax/sizeconfig.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 class TestParallax extends StatefulWidget {
@@ -26,7 +27,16 @@ class _TestParallaxState extends State<TestParallax> {
   // positions and count
   double secondTop = 150;
   double top = 125;
-  double? secondLeft;
+  double? skyTop;
+  double? upperLeftTop;
+  double? bottomRightTop;
+  double? bottomLeftTop;
+  double? upperRightTop;
+  double? skyLeft;
+  double? upperLeftLeft;
+  double? bottomRightLeft;
+  double? bottomLeftLeft;
+  double? upperRightLeft;
   double? left;
   int count = 0;
 
@@ -69,14 +79,27 @@ class _TestParallaxState extends State<TestParallax> {
     // The left positin should equal (width - 100) / 2
     // The greatest absolute value of x is 10, multipling it by 12 allows the left position to move a total of 120 in either direction.
     setState(() {
-      left = ((event.x * 12) + ((width! - 100) / 2));
-      secondLeft = ((event.x * -12) + ((width! - 100) / 2));
+      skyLeft = ((event.x * 2.3));
+      left =
+          ((event.x * 3.2) + ((width! - getProportionateScreenWidth(250)) / 2));
+      upperLeftLeft =
+          ((event.x * -6) + ((width! - getProportionateScreenWidth(380)) / 2));
+      bottomRightLeft =
+          ((event.x * -6) + ((width! - getProportionateScreenWidth(70)) / 2));
+      bottomLeftLeft =
+          ((event.x * 1) + ((width! - getProportionateScreenWidth(380)) / 2));
+      upperRightLeft =
+          ((event.x * 1) + ((width! - getProportionateScreenWidth(-70)) / 2));
     });
 
     // When y = 0 it should have a top position matching the target, which we set at 125
     setState(() {
       top = event.y * 14 + height! / 2.3;
       secondTop = event.y * -14 + height! / 2.3;
+      upperLeftTop = event.y * 10 + height! / 3.8;
+      bottomRightTop = event.y * 10 + height! / 11;
+      bottomLeftTop = event.y * 4 + height! / 60;
+      upperRightTop = event.y * 4 + height! / 3.31;
     });
   }
 
@@ -95,13 +118,13 @@ class _TestParallaxState extends State<TestParallax> {
 
     // Accelerometer events come faster than we need them so a timer is used to only proccess them every 200 milliseconds
     if (timer == null || !timer!.isActive) {
-      timer = Timer.periodic(Duration(milliseconds: 5), (_) {
+      timer = Timer.periodic(Duration(milliseconds: 0), (_) {
         // if count has increased greater than 3 call pause timer to handle success
         if (count > 3) {
           // pauseTimer();
         } else {
           // proccess the current event
-          setColor(event!);
+          // setColor(event!);
           setPosition(event!);
         }
       });
@@ -142,9 +165,12 @@ class _TestParallaxState extends State<TestParallax> {
 
     return Scaffold(
       backgroundColor: Colors.grey,
-      // appBar: AppBar(
-      //   title: Text(widget.title),
-      // ),
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        brightness: Brightness.dark,
+        elevation: 0.0,
+        backgroundColor: Color(0x44000000),
+      ),
       body: Stack(
         children: [
           Positioned(
@@ -163,18 +189,18 @@ class _TestParallaxState extends State<TestParallax> {
               // bottom left
               //
               Positioned(
-                  bottom: 14.2,
-                  left: 612,
+                  bottom: getProportionateScreenHeight(bottomLeftTop!),
+                  left: getProportionateScreenWidth(bottomLeftLeft!),
                   child: Image.asset(
                     'assets/CLOUDSbottomleft.png',
-                    height: 84.7,
+                    height: getProportionateScreenHeight(84.7)
                   )),
               //
               // upper right
               //
               Positioned(
-                  bottom: 247.81,
-                  left: 866,
+                  bottom: getProportionateScreenHeight(upperRightTop!),
+                  left: getProportionateScreenWidth(upperRightLeft!),
                   child: Image.asset(
                     'assets/CLOUDSupperleft.png',
                     height: 64.88,
@@ -184,7 +210,7 @@ class _TestParallaxState extends State<TestParallax> {
               //
               Positioned(
                   bottom: 0.0,
-                  left: (width! - 270) / 2,
+                  left: left,
                   child: Image.asset(
                     'assets/IMG_9398 1head.png',
                     height: 315.39,
@@ -193,8 +219,8 @@ class _TestParallaxState extends State<TestParallax> {
               // upper left
               //
               Positioned(
-                  bottom: 214.46,
-                  left: 645,
+                  bottom: getProportionateScreenHeight(upperLeftTop!),
+                  left: getProportionateScreenHeight(upperLeftLeft!),
                   child: Image.asset(
                     'assets/CLOUDStopleft.png',
                     height: 62.18,
@@ -203,8 +229,8 @@ class _TestParallaxState extends State<TestParallax> {
               // bottom right
               //
               Positioned(
-                  bottom: 74.79,
-                  left: 795,
+                  bottom: getProportionateScreenHeight(bottomRightTop!),
+                  left: getProportionateScreenWidth(bottomRightLeft!),
                   child: Image.asset(
                     'assets/CLOUDStopleft.png',
                     height: 63.98,
@@ -213,6 +239,17 @@ class _TestParallaxState extends State<TestParallax> {
           ),
         ],
       ),
+      //
+      // measurements for web
+      //
+      // WebHomePage(width: width),
+      //
+      //
+      //
+      //
+      //
+      //
+      //
       // Stack(
       //   children: [
       //     Positioned(
@@ -251,6 +288,87 @@ class _TestParallaxState extends State<TestParallax> {
       //     )
       //   ],
       // )
+    );
+  }
+}
+
+class WebHomePage extends StatelessWidget {
+  const WebHomePage({
+    Key? key,
+    required this.width,
+  }) : super(key: key);
+
+  final double? width;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Positioned(
+          top: 0.0,
+          bottom: 0.0,
+          right: 0.0,
+          left: 0.0,
+          child: Image.asset(
+            'assets/stars.png',
+            fit: BoxFit.fitHeight,
+          ),
+        ),
+        Stack(
+          children: [
+            //
+            // bottom left
+            //
+            Positioned(
+                bottom: getProportionateScreenHeight(14.2),
+                left: getProportionateScreenWidth(612),
+                child: Image.asset(
+                  'assets/CLOUDSbottomleft.png',
+                  height: 84.7,
+                )),
+            //
+            // upper right
+            //
+            Positioned(
+                bottom: 247.81,
+                left: 866,
+                child: Image.asset(
+                  'assets/CLOUDSupperleft.png',
+                  height: 64.88,
+                )),
+            //
+            // head
+            //
+            Positioned(
+                bottom: 0.0,
+                left: (width! - 270) / 2,
+                child: Image.asset(
+                  'assets/IMG_9398 1head.png',
+                  height: 315.39,
+                )),
+            //
+            // upper left
+            //
+            Positioned(
+                bottom: 214.46,
+                left: 645,
+                child: Image.asset(
+                  'assets/CLOUDStopleft.png',
+                  height: 62.18,
+                )),
+            //
+            // bottom right
+            //
+            Positioned(
+                bottom: 74.79,
+                left: 795,
+                child: Image.asset(
+                  'assets/CLOUDStopleft.png',
+                  height: 63.98,
+                )),
+          ],
+        ),
+      ],
     );
   }
 }

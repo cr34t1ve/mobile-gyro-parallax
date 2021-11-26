@@ -2,14 +2,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:mobile_gyro_parallax/anothertest.dart';
+import 'package:mobile_gyro_parallax/sizeconfig.dart';
 import 'package:mobile_gyro_parallax/test_parallax.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(MediaQ());
+
+class MediaQ extends StatelessWidget {
+  const MediaQ({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MyApp(),
+      debugShowCheckedModeBanner: false,
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return MaterialApp(
       title: 'Accelerometer',
       theme: ThemeData(
